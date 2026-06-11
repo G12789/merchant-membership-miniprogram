@@ -1,0 +1,181 @@
+<!--pages/account/account.wxml-->
+<view class="container">
+  <!-- 顶部用户信息卡片 -->
+  <view class="user-header">
+    <view class="user-avatar">
+      <text class="avatar-emoji">🏠</text>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{shopInfo.name || '微信用户'}}</text>
+      <text class="user-phone">{{shopInfo.phone || '未绑定手机'}}</text>
+    </view>
+  </view>
+
+  <!-- 会员状态卡片 -->
+  <view class="card status-card" wx:if="{{shopInfo}}">
+    <view class="status-row">
+      <view class="status-left">
+        <view class="status-dot {{statusClass}}"></view>
+        <text class="status-text">{{statusText}}</text>
+      </view>
+      <text class="status-expire">{{expireText}}</text>
+    </view>
+    
+    <!-- 试用期进度 -->
+    <view class="trial-info" wx:if="{{membershipStatus === 'trial' && !isExpired}}">
+      <text class="trial-text">体验期剩余 {{remainingDays}} 天</text>
+    </view>
+  </view>
+
+  <!-- 账户信息区域 -->
+  <view class="card info-section">
+    <view class="section-title">账户信息</view>
+    
+    <view class="info-list">
+      <!-- 状态行 -->
+      <view class="info-item">
+        <text class="info-label">状态</text>
+        <view class="info-right">
+          <text class="info-value">{{statusText}}（余:{{remainingDays}}天）</text>
+          <view class="info-btn upgrade-btn" bindtap="showUpgradePopup">升级&续费</view>
+        </view>
+      </view>
+
+      <!-- 短信行 -->
+      <view class="info-item">
+        <text class="info-label">短信</text>
+        <view class="info-right">
+          <text class="info-value">余:{{shopInfo.smsBalance || 0}}条</text>
+          <view class="info-btn sms-btn" bindtap="buySms">购买短信</view>
+        </view>
+      </view>
+
+      <!-- 商家图像 -->
+      <view class="info-item" bindtap="changeAvatar">
+        <text class="info-label">商家图像</text>
+        <view class="info-right">
+          <view class="info-avatar-wrap">
+            <text class="avatar-emoji-small">🏠</text>
+          </view>
+          <text class="info-arrow">></text>
+        </view>
+      </view>
+
+      <!-- 店铺名称 -->
+      <view class="info-item" bindtap="editShopName">
+        <text class="info-label">店铺名称</text>
+        <view class="info-right">
+          <text class="info-value">{{shopInfo.name || '微信用户'}}</text>
+          <text class="info-arrow">></text>
+        </view>
+      </view>
+
+      <!-- 店铺电话 -->
+      <view class="info-item" bindtap="editShopPhone">
+        <text class="info-label">店铺电话</text>
+        <view class="info-right">
+          <text class="info-value">{{shopInfo.phone}}</text>
+          <text class="info-arrow">></text>
+        </view>
+      </view>
+
+      <!-- 营业执照 -->
+      <view class="info-item" bindtap="uploadLicense">
+        <text class="info-label">营业执照</text>
+        <view class="info-right">
+          <text class="info-value placeholder">{{shopInfo.licenseUrl ? '已上传' : '未上传'}}</text>
+          <text class="info-arrow">></text>
+        </view>
+      </view>
+
+      <!-- 店铺位置 -->
+      <view class="info-item" bindtap="editLocation">
+        <text class="info-label">店铺位置</text>
+        <view class="info-right">
+          <text class="info-value">{{shopInfo.address || '未设置'}}</text>
+          <text class="info-arrow">></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 店铺公告 -->
+    <view class="notice-section">
+      <text class="info-label">店铺公告</text>
+      <textarea class="notice-input" 
+                placeholder="(不需要则不要填写)" 
+                value="{{shopInfo.notice}}"
+                bindinput="onNoticeInput"
+                maxlength="200"></textarea>
+    </view>
+  </view>
+
+  <!-- 底部功能按钮 -->
+  <view class="bottom-btns">
+    <button class="btn-primary" bindtap="sendSms">群发短信</button>
+    <button class="btn-primary" bindtap="saveChanges">确认修改</button>
+    <button class="btn-outline" bindtap="switchShop">切换店铺</button>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section">
+    <text class="logout-btn" bindtap="handleLogout">退出登录</text>
+  </view>
+
+  <!-- 升级套餐弹窗 -->
+  <view class="popup-mask" wx:if="{{showUpgradeModal}}" bindtap="hideUpgradePopup"></view>
+  <view class="popup-container {{showUpgradeModal ? 'show' : ''}}">
+    <view class="popup-header">
+      <text class="popup-title">升级套餐</text>
+      <view class="popup-close" bindtap="hideUpgradePopup">×</view>
+    </view>
+    
+    <view class="popup-content">
+      <view class="plan-list">
+        <!-- 月卡 -->
+        <view class="plan-item {{selectedPlan === 'monthly' ? 'selected' : ''}}" 
+              bindtap="selectPlan" data-plan="monthly">
+          <view class="plan-radio">
+            <view class="radio-inner" wx:if="{{selectedPlan === 'monthly'}}"></view>
+          </view>
+          <view class="plan-info">
+            <text class="plan-name">月卡（30天）</text>
+          </view>
+          <text class="plan-price" wx:if="{{selectedPlan === 'monthly'}}">¥8</text>
+          <text class="plan-price-hidden" wx:else>点击查看</text>
+        </view>
+
+        <!-- 季卡 -->
+        <view class="plan-item {{selectedPlan === 'quarterly' ? 'selected' : ''}}" 
+              bindtap="selectPlan" data-plan="quarterly">
+          <view class="plan-radio">
+            <view class="radio-inner" wx:if="{{selectedPlan === 'quarterly'}}"></view>
+          </view>
+          <view class="plan-info">
+            <text class="plan-name">季卡（90天）</text>
+          </view>
+          <text class="plan-price" wx:if="{{selectedPlan === 'quarterly'}}">¥24</text>
+          <text class="plan-price-hidden" wx:else>点击查看</text>
+        </view>
+
+        <!-- 年卡 -->
+        <view class="plan-item {{selectedPlan === 'yearly' ? 'selected' : ''}}" 
+              bindtap="selectPlan" data-plan="yearly">
+          <view class="plan-radio">
+            <view class="radio-inner" wx:if="{{selectedPlan === 'yearly'}}"></view>
+          </view>
+          <view class="plan-info">
+            <text class="plan-name">年卡（365天）</text>
+          </view>
+          <text class="plan-price" wx:if="{{selectedPlan === 'yearly'}}">¥96</text>
+          <text class="plan-price-hidden" wx:else>点击查看</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="popup-footer">
+      <button class="popup-pay-btn" bindtap="handlePayment" disabled="{{!selectedPlan}}">
+        {{selectedPlan ? '立即支付' : '请选择套餐'}}
+      </button>
+    </view>
+  </view>
+</view>

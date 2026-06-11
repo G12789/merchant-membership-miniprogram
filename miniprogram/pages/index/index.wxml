@@ -1,0 +1,160 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部智能提示 - 根据会员状态动态显示 -->
+  <view class="notice-bar notice-bar-{{noticeType}}" wx:if="{{shopInfo}}">
+    <view class="notice-icon">
+      <image src="/images/icons/notice.png" mode="aspectFit"></image>
+    </view>
+    <view class="notice-content">
+      <text>{{noticeText}}</text>
+    </view>
+    <view class="notice-action" wx:if="{{showUpgradeBtn}}" bindtap="goToPayment">
+      <text class="notice-link">解锁更多 →</text>
+    </view>
+  </view>
+
+  <!-- 未登录提示 -->
+  <view class="login-tip" wx:if="{{!shopInfo}}">
+    <view class="login-card card">
+      <view class="login-icon-wrap">
+        <image class="login-icon" src="/images/icons/shop.png" mode="aspectFit"></image>
+      </view>
+      <text class="login-title">您的会员管理助手</text>
+      <text class="login-desc">免费体验12天，让会员管理更高效</text>
+      <button class="btn btn-primary" bindtap="goToLogin">开始使用</button>
+    </view>
+  </view>
+
+  <!-- 已登录内容 -->
+  <block wx:if="{{shopInfo}}">
+    <!-- 数据概览卡片 -->
+    <view class="card stats-card">
+      <view class="card-title">今日数据</view>
+      <view class="stats-grid">
+        <view class="stats-item">
+          <view class="stat-number">{{stats.todayMembers || 0}}</view>
+          <view class="stat-label">新增会员</view>
+        </view>
+        <view class="stats-item">
+          <view class="stat-number">{{stats.todayTransactions || 0}}</view>
+          <view class="stat-label">交易笔数</view>
+        </view>
+        <view class="stats-item">
+          <view class="stat-number">{{stats.todayIncome || '0.00'}}</view>
+          <view class="stat-label">收入(元)</view>
+        </view>
+        <view class="stats-item">
+          <view class="stat-number">{{stats.totalMembers || 0}}</view>
+          <view class="stat-label">会员总数</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷操作 - 2x2网格布局 -->
+    <view class="card">
+      <view class="card-title">常用功能</view>
+      <view class="grid-2x2">
+        <!-- 添加会员 - 需权限 -->
+        <view class="grid-item-2x2" bindtap="handleAddMember">
+          <view class="icon-box {{isExpired ? 'icon-box-disabled' : ''}}">
+            <text class="icon-text">➕</text>
+          </view>
+          <text class="grid-label">添加会员</text>
+          <text class="unlock-hint" wx:if="{{isExpired}}">解锁功能</text>
+        </view>
+        
+        <!-- 会员列表 - 始终可用 -->
+        <view class="grid-item-2x2" bindtap="goToMembers">
+          <view class="icon-box">
+            <text class="icon-text">👥</text>
+          </view>
+          <text class="grid-label">会员列表</text>
+        </view>
+        
+        <!-- 储值扣款 - 需权限 -->
+        <view class="grid-item-2x2" bindtap="handleTransaction">
+          <view class="icon-box {{isExpired ? 'icon-box-disabled' : ''}}">
+            <text class="icon-text">💳</text>
+          </view>
+          <text class="grid-label">储值扣款</text>
+          <text class="unlock-hint" wx:if="{{isExpired}}">解锁功能</text>
+        </view>
+        
+        <!-- 发起营销 - 需权限 -->
+        <view class="grid-item-2x2" bindtap="handleMarketing">
+          <view class="icon-box {{isExpired ? 'icon-box-disabled' : ''}}">
+            <text class="icon-text">📢</text>
+          </view>
+          <text class="grid-label">营销触达</text>
+          <text class="unlock-hint" wx:if="{{isExpired}}">解锁功能</text>
+        </view>
+      </view>
+      
+      <!-- 次要功能 - 小图标横排 -->
+      <view class="sub-actions">
+        <view class="sub-action-item" bindtap="goToMessages">
+          <text class="sub-icon">💬</text>
+          <text class="sub-label">消息</text>
+        </view>
+        <view class="sub-action-item" bindtap="handleDataAnalysis">
+          <text class="sub-icon">📊</text>
+          <text class="sub-label">数据</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营销效果卡片（过期用户显示模糊遮罩） -->
+    <view class="card data-card {{isExpired ? 'blur-mask-container' : ''}}">
+      <view class="card-title">营销效果</view>
+      <view class="data-overview">
+        <view class="data-item">
+          <text class="data-value">{{marketingData.conversionRate || '0%'}}</text>
+          <text class="data-label">转化率</text>
+        </view>
+        <view class="data-item">
+          <text class="data-value">{{marketingData.returnRate || '0%'}}</text>
+          <text class="data-label">回头率</text>
+        </view>
+        <view class="data-item">
+          <text class="data-value">{{marketingData.avgConsume || '0'}}</text>
+          <text class="data-label">客单价</text>
+        </view>
+      </view>
+      
+      <!-- 模糊遮罩 - 柔和引导 -->
+      <view class="blur-overlay" wx:if="{{isExpired}}" bindtap="goToPayment">
+        <view class="blur-content">
+          <image class="lock-icon" src="/images/icons/data.png" mode="aspectFit"></image>
+          <text class="blur-text">查看详细营销效果</text>
+          <text class="blur-link">点击解锁 →</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最近会员 -->
+    <view class="card">
+      <view class="card-header flex-between">
+        <text class="card-title">最近会员</text>
+        <text class="card-more" bindtap="goToMembers">全部 →</text>
+      </view>
+      <view class="member-list" wx:if="{{recentMembers.length > 0}}">
+        <view class="member-item" wx:for="{{recentMembers}}" wx:key="_id">
+          <view class="member-avatar">
+            <text class="avatar-emoji">👤</text>
+          </view>
+          <view class="member-info">
+            <text class="member-name">{{item.name}}</text>
+            <text class="member-phone">{{item.phone}}</text>
+          </view>
+          <view class="member-balance">
+            <text class="balance-value">￥{{item.balance || '0.00'}}</text>
+            <text class="balance-label">余额</text>
+          </view>
+        </view>
+      </view>
+      <view class="empty-state" wx:else>
+        <text>暂无会员数据</text>
+      </view>
+    </view>
+  </block>
+</view>

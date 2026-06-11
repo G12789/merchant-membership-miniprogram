@@ -1,0 +1,76 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <view class="login-header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="title">商户会员工作台</text>
+    <text class="subtitle">注册即送12天免费体验</text>
+  </view>
+
+  <view class="login-form">
+    <view class="form-item">
+      <view class="input-wrap">
+        <image class="input-icon" src="/images/icons/shop.png" mode="aspectFit"></image>
+        <input class="input" placeholder="请输入店铺名称" 
+               value="{{formData.name}}" bindinput="onInputChange" data-field="name" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <view class="input-wrap">
+        <image class="input-icon" src="/images/icons/phone.png" mode="aspectFit"></image>
+        <input class="input" placeholder="请输入联系电话" type="number" maxlength="11"
+               value="{{formData.phone}}" bindinput="onInputChange" data-field="phone" />
+      </view>
+    </view>
+
+    <view class="form-item" wx:if="{{showCode}}">
+      <view class="input-wrap code-wrap">
+        <image class="input-icon" src="/images/icons/code.png" mode="aspectFit"></image>
+        <input class="input" placeholder="请输入验证码" type="number" maxlength="6"
+               value="{{formData.code}}" bindinput="onInputChange" data-field="code" />
+        <button class="code-btn {{codeSending ? 'disabled' : ''}}" bindtap="sendCode" disabled="{{codeSending}}">
+          {{codeText}}
+        </button>
+      </view>
+    </view>
+
+    <button class="btn btn-primary login-btn" bindtap="handleLogin" disabled="{{submitting}}">
+      {{submitting ? '登录中...' : '登录 / 注册'}}
+    </button>
+
+    <view class="agreement">
+      <view class="checkbox {{agreed ? 'checked' : ''}}" bindtap="toggleAgreement">
+        <text wx:if="{{agreed}}">✓</text>
+      </view>
+      <text>我已阅读并同意</text>
+      <text class="link" bindtap="showAgreement">《用户协议》</text>
+      <text>和</text>
+      <text class="link" bindtap="showPrivacy">《隐私政策》</text>
+    </view>
+  </view>
+
+  <view class="login-footer">
+    <view class="divider">
+      <text>其他登录方式</text>
+    </view>
+    <button class="wechat-btn" open-type="getPhoneNumber" bindgetphonenumber="onGetPhoneNumber">
+      <image src="/images/icons/wechat.png" mode="aspectFit"></image>
+      <text>微信一键登录</text>
+    </button>
+  </view>
+
+  <view class="trial-tips">
+    <view class="tip-item">
+      <view class="tip-icon">✓</view>
+      <text>免费体验12天</text>
+    </view>
+    <view class="tip-item">
+      <view class="tip-icon">✓</view>
+      <text>全部功能开放</text>
+    </view>
+    <view class="tip-item">
+      <view class="tip-icon">✓</view>
+      <text>无需绑定银行卡</text>
+    </view>
+  </view>
+</view>

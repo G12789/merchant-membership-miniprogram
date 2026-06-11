@@ -1,0 +1,45 @@
+<!--pages/marketing/marketing.wxml-->
+<view class="container">
+  <view class="card">
+    <view class="card-title">营销活动</view>
+    <view class="marketing-list" wx:if="{{!isExpired}}">
+      <view class="marketing-item" bindtap="createActivity" data-type="coupon">
+        <view class="item-icon">
+          <image src="/images/icons/coupon.png" mode="aspectFit"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-title">发放优惠券</text>
+          <text class="item-desc">向会员发放优惠券，促进消费</text>
+        </view>
+        <text class="item-arrow">></text>
+      </view>
+      <view class="marketing-item" bindtap="createActivity" data-type="message">
+        <view class="item-icon">
+          <image src="/images/icons/message.png" mode="aspectFit"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-title">群发消息</text>
+          <text class="item-desc">向会员群发活动通知</text>
+        </view>
+        <text class="item-arrow">></text>
+      </view>
+      <view class="marketing-item" bindtap="createActivity" data-type="birthday">
+        <view class="item-icon">
+          <image src="/images/icons/birthday.png" mode="aspectFit"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-title">生日祝福</text>
+          <text class="item-desc">自动发送生日祝福和优惠</text>
+        </view>
+        <text class="item-arrow">></text>
+      </view>
+    </view>
+    
+    <!-- 过期提示 -->
+    <view class="expired-block" wx:if="{{isExpired}}">
+      <image class="lock-icon" src="/images/icons/lock.png" mode="aspectFit"></image>
+      <text class="expired-text">营销功能需要付费会员才能使用</text>
+      <button class="btn btn-accent" bindtap="goToPayment">立即升级</button>
+    </view>
+  </view>
+</view>

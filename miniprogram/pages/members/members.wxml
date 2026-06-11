@@ -1,0 +1,89 @@
+<!--pages/members/members.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <image class="search-icon" src="/images/icons/search.png" mode="aspectFit"></image>
+      <input class="search-input" placeholder="搜索会员姓名或手机号" 
+             value="{{searchKeyword}}" bindinput="onSearchInput" />
+      <image class="clear-icon" wx:if="{{searchKeyword}}" 
+             src="/images/icons/clear.png" mode="aspectFit" bindtap="clearSearch"></image>
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-tabs">
+    <view class="filter-tab {{filterStatus === 'all' ? 'active' : ''}}" bindtap="setFilter" data-status="all">全部</view>
+    <view class="filter-tab {{filterStatus === 'active' ? 'active' : ''}}" bindtap="setFilter" data-status="active">有效</view>
+    <view class="filter-tab {{filterStatus === 'recent' ? 'active' : ''}}" bindtap="setFilter" data-status="recent">最近消费</view>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-bar">
+    <view class="stats-item">
+      <text class="stats-value">{{totalCount}}</text>
+      <text class="stats-label">会员总数</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-value">{{todayCount}}</text>
+      <text class="stats-label">今日新增</text>
+    </view>
+    <view class="stats-item">
+      <text class="stats-value">{{totalBalance}}</text>
+      <text class="stats-label">总余额(元)</text>
+    </view>
+  </view>
+
+  <!-- 会员列表 -->
+  <view class="member-list" wx:if="{{memberList.length > 0}}">
+    <view class="member-card" wx:for="{{memberList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+      <view class="member-avatar">
+        <text class="avatar-emoji">👤</text>
+      </view>
+      <view class="member-info">
+        <view class="member-name-row">
+          <text class="member-name">{{item.name}}</text>
+        </view>
+        <text class="member-phone">{{item.phone}}</text>
+        <text class="member-time">加入：{{item.createTimeText}}</text>
+      </view>
+      <view class="member-balance">
+        <text class="balance-value">￥{{item.balance || '0.00'}}</text>
+        <text class="balance-label">余额</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && memberList.length === 0}}">
+    <image class="empty-icon" src="/images/icons/empty-member.png" mode="aspectFit"></image>
+    <text class="empty-text">{{searchKeyword ? '未找到相关会员' : '暂无会员数据'}}</text>
+    <button class="btn btn-primary empty-btn" wx:if="{{!searchKeyword && !isExpired}}" bindtap="goToAddMember">
+      添加第一个会员
+    </button>
+    <view class="unlock-tip-inline" wx:if="{{isExpired}}">
+      <text>解锁后可添加新会员</text>
+      <text class="unlock-link" bindtap="goToPayment">立即解锁 →</text>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{memberList.length > 0 && hasMore}}">
+    <text wx:if="{{loadingMore}}">加载中...</text>
+    <text wx:else bindtap="loadMore">加载更多</text>
+  </view>
+
+  <!-- 底部添加按钮 -->
+  <view class="add-btn-wrap" wx:if="{{memberList.length > 0}}">
+    <button class="add-btn {{isExpired ? 'disabled' : ''}}" bindtap="handleAddMember">
+      <text class="add-icon">+</text>
+      <text>添加会员</text>
+    </button>
+  </view>
+
+  <!-- 底部智能提示条 - 只在过期时显示 -->
+  <view class="smart-tip-bar" wx:if="{{isExpired && memberList.length > 0}}" bindtap="goToPayment">
+    <text class="smart-tip-text">您已使用 {{totalCount}} 个会员名额，解锁后可继续添加</text>
+    <text class="smart-tip-action">解锁功能 →</text>
+  </view>
+</view>

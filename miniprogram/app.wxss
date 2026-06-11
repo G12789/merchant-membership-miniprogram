@@ -1,0 +1,423 @@
+/**app.wxss**/
+/* ============================================
+   高端 SaaS 工具质感样式系统
+   设计参考: Notion / Canva / Apple iOS
+   ============================================ */
+
+/* CSS变量 */
+page {
+  --primary-color: #1890ff;         /* 阿里蓝 */
+  --primary-light: #40a9ff;         /* 亮蓝 */
+  --primary-bg: #f0f5ff;            /* 浅蓝背景 */
+  --success-color: #52c41a;         /* 成功绿 */
+  --success-bg: #f6ffed;            /* 成功背景 */
+  --warning-color: #faad14;         /* 警告橙 */
+  --warning-bg: #fffbe6;            /* 警告背景 */
+  --text-primary: #262626;          /* 主文字 */
+  --text-secondary: #595959;        /* 次文字 */
+  --text-hint: #8c8c8c;             /* 提示文字 */
+  --text-disabled: #bfbfbf;         /* 禁用文字 */
+  --bg-page: #fafafa;               /* 页面背景 - 极浅灰 */
+  --bg-card: #ffffff;               /* 卡片背景 */
+  --border-color: #f0f0f0;          /* 边框色 */
+  --shadow-light: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  --shadow-heavy: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  --radius-small: 12rpx;
+  --radius-medium: 16rpx;
+  --radius-large: 24rpx;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  
+  background-color: var(--bg-page);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+/* 主色调 */
+.primary-color {
+  color: var(--primary-color);
+}
+
+.primary-bg {
+  background-color: var(--primary-color);
+}
+
+/* 成功色（替代红色强调） */
+.accent-color {
+  color: var(--primary-color);
+}
+
+.accent-bg {
+  background-color: var(--primary-bg);
+}
+
+/* 禁用状态 */
+.disabled-color {
+  color: var(--text-disabled);
+}
+
+.disabled-bg {
+  background-color: #f5f5f5;
+}
+
+/* 通用容器 */
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 卡片样式 - 高端质感 */
+.card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-large);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-light);
+  transition: box-shadow var(--transition-normal), transform var(--transition-fast);
+}
+
+.card:active {
+  transform: scale(0.995);
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 24rpx;
+  letter-spacing: 0.5rpx;
+}
+
+/* 按钮样式 - 微动效 */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.25);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.25);
+}
+
+.btn-disabled {
+  background-color: #f5f5f5;
+  color: var(--text-disabled);
+  box-shadow: none;
+}
+
+.btn-outline {
+  background-color: var(--bg-card);
+  border: 2rpx solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-ghost {
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+  border: none;
+}
+
+/* 智能提示条 - 渐变背景 */
+.notice-bar {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  border-radius: var(--radius-medium);
+  margin-bottom: 24rpx;
+  transition: all var(--transition-normal);
+}
+
+.notice-bar-trial {
+  background: linear-gradient(135deg, #e6f7ff 0%, #f0f5ff 100%);
+  color: var(--text-secondary);
+}
+
+.notice-bar-expired {
+  background: linear-gradient(135deg, var(--warning-bg) 0%, #fff7e6 100%);
+  color: #ad6800;
+}
+
+.notice-bar-paid {
+  background: linear-gradient(135deg, var(--success-bg) 0%, #e6fffb 100%);
+  color: #389e0d;
+}
+
+/* 徽章样式 - 柔和色彩 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.badge-recommend {
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+}
+
+.badge-discount {
+  background-color: var(--warning-bg);
+  color: var(--warning-color);
+}
+
+/* 列表样式 */
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* 解锁提示文字 - 柔和蓝色 */
+.unlock-hint {
+  font-size: 22rpx;
+  color: var(--primary-color);
+  margin-top: 8rpx;
+  opacity: 0.85;
+}
+
+/* 模糊遮罩 - 比斑璇效果 */
+.blur-mask {
+  position: relative;
+}
+
+.blur-mask::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(250,250,250,0.95) 100%);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius-large);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+  color: var(--text-hint);
+}
+
+.empty-icon {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.6;
+}
+
+/* 网格布局 - 3列卡片 */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12rpx;
+}
+
+.grid-item {
+  width: 33.33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 12rpx;
+  transition: transform var(--transition-fast);
+}
+
+.grid-item:active {
+  transform: scale(0.96);
+}
+
+.grid-icon {
+  width: 56rpx;
+  height: 56rpx;
+  margin-bottom: 12rpx;
+  opacity: 0.85;
+}
+
+.grid-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 统计数字 */
+.stat-number {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--primary-color);
+  letter-spacing: -1rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: var(--text-hint);
+  margin-top: 8rpx;
+}
+
+/* 价格样式 - 柔和化 */
+.price {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.price-unit {
+  font-size: 24rpx;
+  color: var(--text-hint);
+}
+
+.price-original {
+  font-size: 24rpx;
+  color: var(--text-disabled);
+  text-decoration: line-through;
+  margin-left: 10rpx;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background-color: var(--border-color);
+  margin: 32rpx 0;
+}
+
+/* flex工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 渐隐动效 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+/* 智能提示条 - 底部固定 */
+.smart-tip-bar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+  background: linear-gradient(135deg, var(--primary-bg) 0%, #e6f7ff 100%);
+  padding: 24rpx 32rpx;
+  border-radius: var(--radius-medium);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-medium);
+  z-index: 100;
+}
+
+.smart-tip-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.smart-tip-action {
+  font-size: 26rpx;
+  color: var(--primary-color);
+  font-weight: 500;
+  padding-left: 20rpx;
+}
+
+/* 线性图标包装 */
+.icon-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: var(--radius-medium);
+  background: linear-gradient(135deg, var(--primary-bg) 0%, #e6f7ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-light);
+  transition: transform var(--transition-fast);
+}
+
+.icon-wrap:active {
+  transform: scale(0.95);
+}
+
+.icon-wrap image {
+  width: 44rpx;
+  height: 44rpx;
+  opacity: 0.85;
+}
+
+/* 2列卡片网格 */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12rpx;
+}
+
+.card-grid-item {
+  width: 50%;
+  padding: 12rpx;
+  box-sizing: border-box;
+}
+
+.card-grid-item .card {
+  margin-bottom: 0;
+  height: 100%;
+}

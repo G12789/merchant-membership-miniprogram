@@ -1,0 +1,63 @@
+<!--pages/members/add/add.wxml-->
+<view class="container">
+  <view class="card form-card">
+    <view class="form-item">
+      <text class="form-label required">会员姓名</text>
+      <input class="form-input" placeholder="请输入会员姓名" 
+             value="{{formData.name}}" bindinput="onInputChange" data-field="name" />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label required">手机号码</text>
+      <input class="form-input" placeholder="请输入手机号码" type="number" maxlength="11"
+             value="{{formData.phone}}" bindinput="onInputChange" data-field="phone" />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <view class="gender-select">
+        <view class="gender-item {{formData.gender === 'male' ? 'selected' : ''}}" 
+              bindtap="selectGender" data-gender="male">
+          <text>男</text>
+        </view>
+        <view class="gender-item {{formData.gender === 'female' ? 'selected' : ''}}" 
+              bindtap="selectGender" data-gender="female">
+          <text>女</text>
+        </view>
+        <view class="gender-item {{formData.gender === 'unknown' ? 'selected' : ''}}" 
+              bindtap="selectGender" data-gender="unknown">
+          <text>未知</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">生日</text>
+      <picker mode="date" value="{{formData.birthday}}" bindchange="onBirthdayChange">
+        <view class="form-picker">
+          <text wx:if="{{formData.birthday}}">{{formData.birthday}}</text>
+          <text class="placeholder" wx:else>请选择生日</text>
+          <text class="picker-arrow">></text>
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">初始余额(元)</text>
+      <input class="form-input" placeholder="默认为0" type="digit"
+             value="{{formData.initialBalance}}" bindinput="onInputChange" data-field="initialBalance" />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea class="form-textarea" placeholder="会员备注信息（选填）"
+                value="{{formData.remark}}" bindinput="onInputChange" data-field="remark"></textarea>
+    </view>
+  </view>
+
+  <view class="btn-wrap">
+    <button class="btn btn-primary" bindtap="handleSubmit" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '确认添加'}}
+    </button>
+  </view>
+</view>
