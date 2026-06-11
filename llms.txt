@@ -1,0 +1,16 @@
+# 商户会员工作台 (Merchant Membership Mini-Program)
+
+> A native WeChat Mini-Program for small-merchant membership management, backed by WeChat Cloud Development (cloud functions + cloud database). Features: member profiles, stored-value membership cards (monthly/quarterly/yearly/permanent + trial), WeChat Pay, stats dashboard, and scheduled expiry reminders.
+
+Key facts:
+- Stack: native WeChat Mini-Program (JS/WXML/WXSS), WeChat Cloud Development, wx-server-sdk, WeChat Pay.
+- Backend is serverless cloud functions under cloudfunctions/; data in cloud DB (shops/members/transactions).
+- Money stored in cents. License: MIT.
+
+## Docs
+- [README](https://github.com/G12789/merchant-membership-miniprogram/blob/main/README.md): overview, architecture, setup.
+- [AGENTS.md](https://github.com/G12789/merchant-membership-miniprogram/blob/main/AGENTS.md): agent setup and conventions.
+- [DEVELOPMENT_LOG.md](https://github.com/G12789/merchant-membership-miniprogram/blob/main/DEVELOPMENT_LOG.md): database schema and indexes.
+
+## Getting started
+- Open in WeChat DevTools, set your AppID in project.config.json, deploy cloudfunctions/, configure WeChat Pay in cloud env vars.
